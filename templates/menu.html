@@ -3,28 +3,35 @@
         <link rel=stylesheet type=text/css href="{{url_for('static',filename='styles.css')}}">
     </head>
     <body>
-        <h1>{{restaurant.name}}</h1>
-
-        {% with messages = get_flashed_messages()%}
-            {%if messages%}
+        <p><a href = "{{url_for('newMenuItem', restaurant_id=restaurant.id)}}">Create New Item</a></p>
+        <p>
+            <h2>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                
                 <ul>
-                    {%for message in messages%}
-                        <li><strong>{{message}}</strong></li>
-                    {%endfor%}
+                {% for message in messages %}
+                  <li><strong>{{message}}</strong></li>
+                  {% endfor %}
                 </ul>
-            {%endif%}
-        {%endwith%}
-
-        <p><a href = "{{url_for('newMenuItem', restaurant_id = restaurant.id) }}">Create New Item</a></p>
-        {%for i in items %}
+                {% endif %}
+                {% endwith %}
+            </h2>
+        </p> 
             <div>
-                <p>{{i.name}}</br>
-                {{i.description}}</br>
-                {{i.price}}</br>
-                <a href="{{url_for('editMenuItem',restaurant_id=restaurant.id,menu_id=i.id)}}">Edit</a></br>
-                <a href="{{url_for('deleteMenuItem',restaurant_id=restaurant.id,menu_id=i.id)}}">Delete</a>
-                </p>
+                {%if item !=[]%}
+                    {%for i in item%}
+                        <p>{{i.name}}</br>
+                        {{i.description}}</br>
+                        {{i.price}}</br>
+                        <a href="{{url_for('editMenuItem', restaurant_id=restaurant.id,menu_id=i.id)}}">Edit</a></br>
+                        <a href="{{url_for('deleteMenuItem', restaurant_id=restaurant.id,menu_id=i.id)}}">Delete</a>
+                        </p>
+                    {%endfor%}
+                {%else%}
+                    <p>Ops! Looks like you don't have any item registered. Please, create a new item.</p>
+                {%endif%}
+                <a href="{{url_for('showRestaurants')}}">Back</a>
             </div>
-        {%endfor%}
     </body>
 </html>
